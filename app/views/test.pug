@@ -1,0 +1,65 @@
+extends layout
+
+block content
+    div(class='container')
+        h2 Welcome to #{title}
+
+    div(class='container')
+        div(class='row g-3')
+            div(class='col-auto')
+                lable(class="form-label") ClientID:
+                br
+                input(class="form-control-sm" type='text' id="client_id" value="13")
+            div(class='col-auto')
+                lable(class="form-label") Nickname:
+                br
+                input(class="form-control-sm" type='text' id="nickname" value="username")
+            div(class='col-auto')
+                lable(class="form-label") Realm:
+                br
+                input(class="form-control-sm" type='text' id="realm" value="test")
+            div(class='col-auto')
+                br
+                button(class="btn btn-primary btn-sm me-1" type='text' id="connectSocket") Connect
+                button(class="btn btn-primary btn-sm btn-warning me-1" type='text' id="disconnectSocket") Disconnect
+            div SocketID:
+                span(id='client_socket_id' class='ms-1')
+    br
+    div(class='container')
+        h4 Resource
+        div(class='row g-3')
+
+            div(class='col-auto')
+                lable(class="form-label") EntityName:
+                br
+                input(class="form-control-sm" type='text' id="entity_name" value="orders")
+            div(class='col-auto')
+                lable(class="form-label") EntityId:
+                br
+                input(class="form-control-sm" type='text' id="entity_id" value="42")
+
+            div(class='col-auto')
+                br
+                button(class="btn btn-primary btn-sm btn-info me-1" type='text' id="isLock") isLock
+                button(class="btn btn-primary btn-sm me-1" type='text' id="lockObj") Lock
+                button(class="btn btn-primary btn-sm btn-danger me-1" type='text' id="UnlockObj") Unlock
+                button(class="btn btn-primary btn-sm btn-dark me-1" type='text' id="ForceUnlockObj") ForceUnlock
+
+        br
+        h4 Command result
+        div(class='row')
+            div(id='resultLock' class='border border-primary')
+
+        br
+        h4 Timers
+        div(class='row')
+            div(id='timerList' class='border border-info')
+
+    br
+    div(class='container')
+        h4 Locked resources
+        div(class='row')
+            div(id='resources')
+        br
+        div(class='row')
+            button(class="btn btn-primary btn-sm purple" type='text' id="getResources") GetLockResources

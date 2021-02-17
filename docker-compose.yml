@@ -1,0 +1,49 @@
+version: "3.7"
+
+services:
+  app:
+    build:
+      context: .box/app
+      args:
+        USER_ID: ${RUN_AS_USER:-1000}
+    volumes:
+      - ./app:/app:delegated
+    ports:
+      - ${APP_HTTP_PORT}
+    env_file:
+      - .env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`${APP_HOSTNAME}`)"
+      - "traefik.http.services.app.loadbalancer.server.port=3000"
+    networks:
+      - default
+    command: yarn run start-dev
+
+  redis:
+    image: redis:6
+    ports:
+      - "6379:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - default
+
+  reverse-proxy:
+    # The official v2 Traefik docker image
+    image: traefik:v2.2
+    # Enables the web UI and tells Traefik to listen to docker
+    command:
+      --api.insecure=true
+      --providers.docker
+      --providers.docker.exposedbydefault=false
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - default
