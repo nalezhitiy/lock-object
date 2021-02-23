@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("Disconnect connection");
             document.getElementById('client_socket_id').innerText = 'None';
             handlerSocketDisconnect(client_id, nickname, realm);
-            document.getElementById('connectSocket').disabled = true;
+            document.getElementById('disconnectSocket').disabled = true;
             document.getElementById('connectSocket').disabled = false;
         });
 
@@ -161,6 +161,9 @@ document.addEventListener("DOMContentLoaded", () => {
             window.socketConnect.disconnect();
             handlerSocketDisconnect(client_id, nickname, realm);
             document.getElementById('disconnectSocket').disabled = true;
+        }
+        for (const key in window.TimerList){
+            removeTimer(key);
         }
     };
 
@@ -224,7 +227,6 @@ function clearResultBlocks() {
     document.getElementById('resultLock').innerHTML = '';
 }
 
-
 function handlerSocketDisconnect(client_id, nickname, realm){
 
     client_id.disabled = false;
@@ -233,10 +235,6 @@ function handlerSocketDisconnect(client_id, nickname, realm){
 
     disabledIfSocketNotConnect(true);
     clearResultBlocks();
-
-    for (const key in window.TimerList){
-        removeTimer(key);
-    }
 }
 
 function createTable(parentDivID, data, client_id) {
